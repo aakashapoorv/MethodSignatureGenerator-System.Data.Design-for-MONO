@@ -68,7 +68,7 @@ namespace System.Data.Design
         }
 
         public string DataSetClassName {
-       	    get { return this.datasetClassName; }
+            get { return this.datasetClassName; }
             set { this.datasetClassName = value; }
         }
 
@@ -88,7 +88,7 @@ namespace System.Data.Design
         }
 
         public string TableClassName {
-       	    get { return this.tableClassName; }
+            get { return this.tableClassName; }
             set { this.tableClassName = value; }
         }
 
@@ -181,7 +181,7 @@ namespace System.Data.Design
 
         public void SetMethodSourceContent (string methodSourceContent) {
 
-       	    DesignDataSource designDataSource = new DesignDataSource ();
+            DesignDataSource designDataSource = new DesignDataSource ();
             StringReader textReader = new StringReader (methodSourceContent);
             designDataSource.ReadXmlSchema (textReader, null);
 
@@ -191,9 +191,9 @@ namespace System.Data.Design
             IEnumerator enumerator = designDataSource.Sources.GetEnumerator ();
             enumerator.MoveNext ();
             this.methodSource = (DbSource) enumerator.Current;
-       	}
+        }
 
-       	private CodeTypeDeclaration GenerateMethodWrapper (out string methodName) {
+        private CodeTypeDeclaration GenerateMethodWrapper (out string methodName) {
 
             CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration ("Wrapper");
             codeTypeDeclaration.IsInterface = true;
