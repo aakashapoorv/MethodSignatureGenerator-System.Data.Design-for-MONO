@@ -95,23 +95,23 @@ namespace System.Data.Design
         public CodeMemberMethod GenerateMethod () {
 
             if (this.codeProvider == null)
-            	throw new ArgumentException ("codeProvider");
+                throw new ArgumentException ("codeProvider");
                         
             if (this.methodSource == null)
-            	throw new ArgumentException ("MethodSource");
+                throw new ArgumentException ("MethodSource");
                         
             QueryGeneratorBase queryGeneratorBase = null;
            	
-	    if (this.methodSource.QueryType == QueryType.Rowset && this.methodSource.CommandOperation == CommandOperation.Select) {
-            	queryGeneratorBase = new QueryGenerator (null);
-            	queryGeneratorBase.ContainerParameterTypeName = this.GetParameterTypeName ();
-            	queryGeneratorBase.ContainerParameterName = this.GetParameterName ();
-            	queryGeneratorBase.ContainerParameterType = this.containerParameterType;
+            if (this.methodSource.QueryType == QueryType.Rowset && this.methodSource.CommandOperation == CommandOperation.Select) {
+                queryGeneratorBase = new QueryGenerator (null);
+                queryGeneratorBase.ContainerParameterTypeName = this.GetParameterTypeName ();
+                queryGeneratorBase.ContainerParameterName = this.GetParameterName ();
+                queryGeneratorBase.ContainerParameterType = this.containerParameterType;
             } else {
                 queryGeneratorBase = new FunctionGenerator (null);
             }
             
-	    queryGeneratorBase.DeclarationOnly = true;
+            queryGeneratorBase.DeclarationOnly = true;
             queryGeneratorBase.CodeProvider = this.codeProvider;
             queryGeneratorBase.MethodSource = this.methodSource;
             queryGeneratorBase.MethodName = this.GetMethodName ();
@@ -125,10 +125,10 @@ namespace System.Data.Design
         public string GenerateMethodSignature () {
 
             if (this.codeProvider == null)
-            	throw new ArgumentException ("codeProvider");
+                throw new ArgumentException ("codeProvider");
         
             if (this.methodSource == null)
-            	throw new ArgumentException ("MethodSource");
+                throw new ArgumentException ("MethodSource");
                 
             string value = null;
             CodeTypeDeclaration codeType = this.GenerateMethodWrapper (out value);
@@ -138,12 +138,12 @@ namespace System.Data.Design
             string[] array = text.Split(Environment.NewLine.ToCharArray());
             string[] array2 = array;
             
-	    for (int i = 0; i < array2.Length; i++) {
-            	string text2 = array2[i];
+            for (int i = 0; i < array2.Length; i++) {
+                string text2 = array2[i];
                 
-	        if (text2.Contains(value))
+                if (text2.Contains(value))
                       return text2.Trim().TrimEnd( new char[] { MethodSignatureGenerator.endOfStatement });
-                                
+
                 return null;
             }
         }
@@ -151,48 +151,48 @@ namespace System.Data.Design
         public CodeTypeDeclaration GenerateUpdatingMethods () {
 
             if (this.designTable == null)
-            	throw new InternalException ("DesignTable should not be null.");
+                throw new InternalException ("DesignTable should not be null.");
                         
             if (StringUtil.Empty(this.datasetClassName))
-            	throw new InternalException ("DatasetClassName should not be empty.");
+                throw new InternalException ("DatasetClassName should not be empty.");
                         
             CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration ("wrapper");
             codeTypeDeclaration.IsInterface = true;
             new QueryHandler(this.codeProvider, this.designTable) {
-            	DeclarationsOnly = true
+                DeclarationsOnly = true
                 }.AddUpdateQueriesToDataComponent (codeTypeDeclaration, this.datasetClassName, this.codeProvider);
                                                 
             return codeTypeDeclaration;
         }
 
-  	public void SetDesignTableContent (string designTableContent) {
+        public void SetDesignTableContent (string designTableContent) {
 
-    	    DesignDataSource designDataSource = new DesignDataSource();
-      	    StringReader textReader = new StringReader (designTableContent);
+            DesignDataSource designDataSource = new DesignDataSource();
+            StringReader textReader = new StringReader (designTableContent);
        	    designDataSource.ReadXmlSchema (textReader, null);
-       		
-	    if (designDataSource.DesignTables == null || designDataSource.DesignTables.Count != 1)
-        	throw new InternalException ("Unexpected number of sources in deserialized DataSource.");
+
+            if (designDataSource.DesignTables == null || designDataSource.DesignTables.Count != 1)
+                throw new InternalException ("Unexpected number of sources in deserialized DataSource.");
                         
             IEnumerator enumerator = designDataSource.DesignTables.GetEnumerator ();
             enumerator.MoveNext ();
             this.designTable = (DesignTable) enumerator.Current;
-    	}
+        }
 
         public void SetMethodSourceContent (string methodSourceContent) {
 
        	    DesignDataSource designDataSource = new DesignDataSource ();
             StringReader textReader = new StringReader (methodSourceContent);
             designDataSource.ReadXmlSchema (textReader, null);
-            
-	    if (designDataSource.Sources == null || designDataSource.Sources.Count != 1)
+
+            if (designDataSource.Sources == null || designDataSource.Sources.Count != 1)
                 throw new InternalException ("Unexpected number of sources in deserialized DataSource.");
-                
+
             IEnumerator enumerator = designDataSource.Sources.GetEnumerator ();
             enumerator.MoveNext ();
             this.methodSource = (DbSource) enumerator.Current;
        	}
-                
+
        	private CodeTypeDeclaration GenerateMethodWrapper (out string methodName) {
 
             CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration ("Wrapper");
@@ -200,63 +200,63 @@ namespace System.Data.Design
             CodeMemberMethod codeMemberMethod = this.GenerateMethod();
             codeTypeDeclaration.Members.Add (codeMemberMethod);
             methodName = codeMemberMethod.Name;
-                
-	    return codeTypeDeclaration;
+
+            return codeTypeDeclaration;
       	}
-                
+
        	private string GetParameterName () {
 
        	    if (this.containerParameterType == typeof (DataTable))
                 return "dataTable";
-        
+
             return "dataSet";
-    	}
-                
-    	private string GetParameterTypeName () {
+        }
+
+        private string GetParameterTypeName () {
 
             if (StringUtil.Empty (this.datasetClassName))
-               throw new InternalException ("DatasetClassName should not be empty.");
-                
+                throw new InternalException ("DatasetClassName should not be empty.");
+
             if (!(this.containerParameterType == typeof (DataTable)))
-  	        return this.datasetClassName;
-                
+                return this.datasetClassName;
+
             if (StringUtil.Empty (this.tableClassName))
-              	throw new InternalException ("TableClassName should not be empty.");
-                
+                throw new InternalException ("TableClassName should not be empty.");
+
             return CodeGenHelper.GetTypeName (this.codeProvider, this.datasetClassName, this.tableClassName);
        	}
-                
-     	private string GetMethodName () {
+
+        private string GetMethodName () {
 
             if (this.methodSource.QueryType == QueryType.Rowset) {
                	if (this.getMethod) {
                     if (this.pagingMethod) {
                         if (this.methodSource.GeneratorGetMethodNameForPaging != null) 
                             return this.methodSource.GeneratorGetMethodNameForPaging;
-                            			
+
                         return this.methodSource.GetMethodName + DataComponentNameHandler.PagingMethodSuffix;
                     } else {
                         if (this.methodSource.GeneratorGetMethodName != null) 
                             return this.methodSource.GeneratorGetMethodName;
-                                                                                        
+
                        	return this.methodSource.GetMethodName;
                     }
                 } else {
-     	            if (this.pagingMethod) {
+                    if (this.pagingMethod) {
                         if (this.methodSource.GeneratorSourceNameForPaging != null)
                             return this.methodSource.GeneratorSourceNameForPaging;
-                                                
-                   	return this.methodSource.Name + DataComponentNameHandler.PagingMethodSuffix;
+
+                        return this.methodSource.Name + DataComponentNameHandler.PagingMethodSuffix;
                     } else {
                	        if (this.methodSource.GeneratorSourceName != null)
                             return this.methodSource.GeneratorSourceName;
-                                
+
                         return this.methodSource.Name;
-     	            }
-           	}                                
+                    }
+                }
             } else {
                 if (this.methodSource.GeneratorSourceName != null)
-      		    return this.methodSource.GeneratorSourceName;
+                    return this.methodSource.GeneratorSourceName;
                                 
                return this.methodSource.Name;
             }
