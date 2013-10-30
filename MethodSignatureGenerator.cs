@@ -202,11 +202,11 @@ namespace System.Data.Design
             methodName = codeMemberMethod.Name;
 
             return codeTypeDeclaration;
-      	}
+        }
 
-       	private string GetParameterName () {
+        private string GetParameterName () {
 
-       	    if (this.containerParameterType == typeof (DataTable))
+            if (this.containerParameterType == typeof (DataTable))
                 return "dataTable";
 
             return "dataSet";
@@ -224,12 +224,12 @@ namespace System.Data.Design
                 throw new InternalException ("TableClassName should not be empty.");
 
             return CodeGenHelper.GetTypeName (this.codeProvider, this.datasetClassName, this.tableClassName);
-       	}
+        }
 
         private string GetMethodName () {
 
             if (this.methodSource.QueryType == QueryType.Rowset) {
-               	if (this.getMethod) {
+                if (this.getMethod) {
                     if (this.pagingMethod) {
                         if (this.methodSource.GeneratorGetMethodNameForPaging != null) 
                             return this.methodSource.GeneratorGetMethodNameForPaging;
@@ -239,7 +239,7 @@ namespace System.Data.Design
                         if (this.methodSource.GeneratorGetMethodName != null) 
                             return this.methodSource.GeneratorGetMethodName;
 
-                       	return this.methodSource.GetMethodName;
+                        return this.methodSource.GetMethodName;
                     }
                 } else {
                     if (this.pagingMethod) {
@@ -248,7 +248,7 @@ namespace System.Data.Design
 
                         return this.methodSource.Name + DataComponentNameHandler.PagingMethodSuffix;
                     } else {
-               	        if (this.methodSource.GeneratorSourceName != null)
+                        if (this.methodSource.GeneratorSourceName != null)
                             return this.methodSource.GeneratorSourceName;
 
                         return this.methodSource.Name;
