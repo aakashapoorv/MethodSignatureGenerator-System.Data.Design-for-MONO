@@ -2,8 +2,8 @@
 // MethodSignatureGenerator.cs
 //
 // Author:
-// Atsushi Enomoto (atsushi@ximian.com)
-// Aakash Apoorv (aakash.apoorv@outlook.com)
+//      Atsushi Enomoto (atsushi@ximian.com)
+//      Aakash Apoorv (aakash.apoorv@outlook.com)
 //
 // Copyright (C) 2007 Novell, Inc.
 //
@@ -62,6 +62,7 @@ namespace System.Data.Design
                         set {
                                 if (value != typeof (DataSet) && value != typeof (DataTable))
                                         throw new InternalException ("Unsupported container parameter type.");
+                                
                                 this.containerParameterType = value;
                         }
                 }
@@ -152,12 +153,12 @@ namespace System.Data.Design
                         if (this.designTable == null)
                                 throw new InternalException ("DesignTable should not be null.");
                         
-                        if (StringUtil.Empty(this.datasetClassName))
+                        if (StringUtil.Empty (this.datasetClassName))
                                 throw new InternalException ("DatasetClassName should not be empty.");
                         
                         CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration ("wrapper");
                         codeTypeDeclaration.IsInterface = true;
-                        new QueryHandler(this.codeProvider, this.designTable) {
+                        new QueryHandler (this.codeProvider, this.designTable) {
                                 DeclarationsOnly = true
                                 }.AddUpdateQueriesToDataComponent (codeTypeDeclaration, this.datasetClassName, this.codeProvider);
                                                 
